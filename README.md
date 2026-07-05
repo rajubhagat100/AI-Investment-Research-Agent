@@ -159,41 +159,6 @@ Therefore, we recommend a **Split Deployment** strategy:
 2. **Backend (Express)**: Deployed to **Render.com** (fully supports persistent HTTP connections for SSE).
 
 ---
-
-### Step 1: Deploy the Backend to Render.com
-1. Sign up for a free account at [Render.com](https://render.com/).
-2. Click **New** > **Web Service**.
-3. Link your GitHub repository.
-4. Set the following settings:
-   * **Root Directory**: `backend` (or leave empty if deploying a standalone backend repository)
-   * **Runtime**: `Node`
-   * **Build Command**: `npm install`
-   * **Start Command**: `node src/server.js`
-5. Under **Environment Variables**, click **Add Environment Variable** and add:
-   * `GEMINI_API_KEY`: *(your Gemini key)*
-   * `OPENAI_API_KEY`: *(your OpenAI key)*
-   * `PORT`: `5000` (Render will automatically bind and expose this port over HTTPS)
-6. Click **Deploy Web Service**. Render will compile and spin up your backend, giving you a public URL (e.g. `https://aura-backend.onrender.com`). Copy this URL.
-
----
-
-### Step 2: Deploy the Frontend to Vercel
-1. Sign up/Log in to [Vercel](https://vercel.com/).
-2. Click **Add New** > **Project** and select your GitHub repository.
-3. In the project configure settings:
-   * **Root Directory**: `frontend`
-   * **Framework Preset**: `Vite`
-   * **Build Command**: `npm run build`
-   * **Output Directory**: `dist`
-4. Expand **Environment Variables** and add:
-   * Key: `VITE_API_URL`
-   * Value: `https://aura-backend.onrender.com` (use the Render URL you copied in Step 1, with no trailing slash)
-5. Click **Deploy**. Vercel will build your static bundle and generate a deployment URL (e.g. `https://aura-agent.vercel.app`).
-
-Once both are active, your Vercel React client will securely connect to the Render backend, providing a fully functional, live-streaming agent console in production!
-
----
-
 ## What We Would Improve with More Time
 
 1. **Multi-Agent Consensus (Crew.ai style)**:
