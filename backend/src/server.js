@@ -39,16 +39,14 @@ app.get('/api/research/stream', async (req, res) => {
 
   const investmentProfile = profile || 'Growth';
 
-  // Setup headers for Server-Sent Events
-  res.writeHead(200, {
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache',
-    'Connection': 'keep-alive',
-    'X-Accel-Buffering': 'no', // Disable buffering in proxy servers like Nginx
-  });
+  // Setup headers for Server-Sent Events (preserving CORS headers from middleware)
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no'); // Disable buffering in proxy servers like Nginx
 
   // Flush headers immediately
-  res.write('\n');
+  res.flushHeaders();
 
   console.log(`[SSE Stream] Starting research for "${companyName}" with profile "${investmentProfile}"`);
 
