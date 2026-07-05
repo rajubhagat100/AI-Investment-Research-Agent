@@ -1,7 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import dns from 'dns';
 import { runInvestmentResearch } from './agent/agent.js';
+
+// Force Node.js to resolve IPv4 addresses first to avoid socket connection failures to Google APIs on Render
+dns.setDefaultResultOrder('ipv4first');
 
 // Load environment variables
 dotenv.config();
