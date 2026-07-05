@@ -42,6 +42,13 @@ export default function Dashboard({ data }) {
   const dividendYield = companyProfile.dividendYield || 'N/A';
   const currency = companyProfile.currency || 'USD';
 
+  // Helper to format P/E ratio to 2 decimal places
+  const formatPE = (pe) => {
+    if (pe === 'N/A' || pe === undefined || pe === null) return 'N/A';
+    const num = parseFloat(pe);
+    return isNaN(num) ? pe : num.toFixed(2);
+  };
+
   // Determine classes for styling based on recommendation
   let decisionClass = 'pass-card';
   let DecisionIcon = XCircle;
@@ -120,7 +127,7 @@ export default function Dashboard({ data }) {
           </div>
           <div className="profile-stat-box">
             <div className="profile-stat-label">P/E Ratio (Trailing)</div>
-            <div className="profile-stat-val">{peRatio}</div>
+            <div className="profile-stat-val">{formatPE(peRatio)}</div>
           </div>
           <div className="profile-stat-box">
             <div className="profile-stat-label">Dividend Yield</div>
