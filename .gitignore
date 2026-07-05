@@ -1,1 +1,5 @@
 node_modules
+staging_zip/
+dist/
+*.zip
+.env
