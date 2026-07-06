@@ -54,6 +54,7 @@ app.get('/api/health', (req, res) => {
   res.json({
     status: 'healthy',
     timestamp: new Date().toISOString(),
+    nodeVersion: process.version,
     llmProvider: process.env.GEMINI_API_KEY ? 'Gemini' : (process.env.OPENAI_API_KEY ? 'OpenAI' : 'None configured')
   });
 });
