@@ -180,6 +180,16 @@ export default function App() {
               </div>
               <AgentTerminal logs={logs} isLoading={isLoading} />
             </div>
+          ) : !isLoading && logs.length > 0 && !result ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <div className="glass-panel" style={{ padding: '2rem', textAlign: 'center', border: '1px solid var(--accent-pass)' }}>
+                <h2 style={{ fontFamily: 'var(--font-display)', marginBottom: '0.5rem', color: 'var(--accent-pass)' }}>Research Failed</h2>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                  The research agent encountered a connection or server error during execution. Please review the diagnostic log below.
+                </p>
+              </div>
+              <AgentTerminal logs={logs} isLoading={isLoading} />
+            </div>
           ) : result ? (
             <Dashboard data={result} />
           ) : (
