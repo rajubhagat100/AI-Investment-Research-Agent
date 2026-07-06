@@ -52,7 +52,8 @@ export default function App() {
 
     // Create backend SSE connection (with cache-busting timestamp to prevent browsers from caching previous 404s)
     const baseApi = import.meta.env.VITE_API_URL || '';
-    const backendUrl = `${baseApi}/api/research/stream?companyName=${encodeURIComponent(companyName)}&profile=${encodeURIComponent(profile)}&t=${Date.now()}`;
+    const cleanApi = baseApi.endsWith('/') ? baseApi.slice(0, -1) : baseApi;
+    const backendUrl = `${cleanApi}/api/research/stream?companyName=${encodeURIComponent(companyName)}&profile=${encodeURIComponent(profile)}&t=${Date.now()}`;
     
     console.log(`Connecting to SSE stream: ${backendUrl}`);
     const eventSource = new EventSource(backendUrl);
