@@ -87,7 +87,7 @@ export default function App() {
 
     eventSource.onerror = (error) => {
       console.error('EventSource connection error:', error);
-      setLogs(prev => [...prev, '[Error] SSE connection failed. Confirm backend server is active on port 5000.']);
+      setLogs(prev => [...prev, '[Error] SSE connection failed. Confirm the backend API server is online.']);
       setIsLoading(false);
       eventSource.close();
     };
