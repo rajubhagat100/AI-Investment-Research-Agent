@@ -21,6 +21,34 @@ app.use(cors({
 
 app.use(express.json());
 
+// Root landing page to guide users to Vercel
+app.get('/', (req, res) => {
+  res.send(`
+    <html>
+      <head>
+        <title>AURA Backend API</title>
+        <style>
+          body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #060913; color: #f3f4f6; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; text-align: center; }
+          a { color: #6366f1; text-decoration: none; border-bottom: 2px solid #6366f1; padding-bottom: 2px; font-weight: 600; transition: all 0.2s; }
+          a:hover { color: #a5b4fc; border-color: #a5b4fc; }
+          .card { background: rgba(17, 24, 39, 0.75); border: 1px solid rgba(255, 255, 255, 0.08); padding: 3rem; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); max-width: 450px; }
+          h2 { font-size: 1.8rem; margin-top: 0; color: #a5b4fc; }
+          p { color: #9ca3af; line-height: 1.6; margin-bottom: 1.5rem; }
+        </style>
+      </head>
+      <body>
+        <div class="card">
+          <h2>AURA Research Agent API</h2>
+          <p>This is the server-side API processing engine. To perform stock research and access the interactive dashboard, please open the client portal:</p>
+          <p style="font-size: 1.1rem; margin-bottom: 0;">
+            <a href="https://ai-investment-research-agent-drab.vercel.app" target="_blank">Open AURA Frontend Dashboard &rarr;</a>
+          </p>
+        </div>
+      </body>
+    </html>
+  `);
+});
+
 // Basic health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({
