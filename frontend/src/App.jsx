@@ -50,10 +50,9 @@ export default function App() {
     setLogs([]);
     setResult(null);
 
-    // Create backend SSE connection
-    // We encode the query parameters safely
+    // Create backend SSE connection (with cache-busting timestamp to prevent browsers from caching previous 404s)
     const baseApi = import.meta.env.VITE_API_URL || '';
-    const backendUrl = `${baseApi}/api/research/stream?companyName=${encodeURIComponent(companyName)}&profile=${encodeURIComponent(profile)}`;
+    const backendUrl = `${baseApi}/api/research/stream?companyName=${encodeURIComponent(companyName)}&profile=${encodeURIComponent(profile)}&t=${Date.now()}`;
     
     console.log(`Connecting to SSE stream: ${backendUrl}`);
     const eventSource = new EventSource(backendUrl);
