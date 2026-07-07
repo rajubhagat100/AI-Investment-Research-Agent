@@ -116,9 +116,52 @@ app.get('/api/research/stream', async (req, res) => {
     }
   } catch (error) {
     console.error('[SSE Stream Error] Agent run failed:', error);
-    if (isActive) {
-      sendSSE('error', { message: error.message || 'Investment research agent encountered an error.' });
-      res.end();
+    
+    // Detect key-related quota or authorization errors at runtime
+    const errMsg = error.message || '';
+    const isCredentialsError = 
+      errMsg.includes('quota') || 
+      errMsg.includes('billing') ||
+      errMsg.includes('429') || 
+      errMsg.includes('API key') || 
+      errMsg.includes('not valid') || 
+      errMsg.includes('invalid') || 
+      errMsg.includes('unauthorized') ||
+      errMsg.includes('401') ||
+      errMsg.includes('403');
+
+    if (isCredentialsError && isActive) {
+      console.log('[SSE Stream] Detected LLM credentials/quota error. Switching dynamically to Simulation Mode...');
+      sendSSE('status', { message: `[System] LLM provider error: "${errMsg.slice(0, 80)}..."` });
+      sendSSE('status', { message: `[System] Gracefully falling back to high-fidelity Simulation Mode to complete research...` });
+      
+      try {
+        const { runSimulation } = await import('./agent/agent.js');
+        await runSimulation(companyName, investmentProfile, (logEvent) => {
+          if (!isActive) return;
+          if (logEvent.type === 'status') {
+            sendSSE('status', { message: logEvent.message });
+          } else if (logEvent.type === 'result') {
+            sendSSE('result', logEvent.data);
+          }
+        });
+        
+        if (isActive) {
+          sendSSE('done', { success: true });
+          res.end();
+        }
+      } catch (simError) {
+        console.error('Simulation fallback failed:', simError);
+        if (isActive) {
+          sendSSE('error', { message: simError.message || 'Simulation fallback failed.' });
+          res.end();
+        }
+      }
+    } else {
+      if (isActive) {
+        sendSSE('error', { message: error.message || 'Investment research agent encountered an error.' });
+        res.end();
+      }
     }
   }
 });

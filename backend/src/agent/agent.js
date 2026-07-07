@@ -106,7 +106,7 @@ function createStreamingCallbacks(onLog) {
 /**
  * Simulation mode when API keys are absent. Gives a high-fidelity visual preview.
  */
-async function runSimulation(companyName, investmentProfile, onLog) {
+export async function runSimulation(companyName, investmentProfile, onLog) {
   onLog({ type: 'status', message: '[Initiating] Initializing Simulation Research Agent (No API keys found)...' });
   await new Promise(r => setTimeout(r, 800));
   
