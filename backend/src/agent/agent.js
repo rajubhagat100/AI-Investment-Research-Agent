@@ -32,9 +32,9 @@ function getLLM(onTokenStream = null) {
   const hasOpenAIKey = !!process.env.OPENAI_API_KEY;
 
   if (hasValidGeminiKey) {
-    console.log('[Agent Config] Initializing Google Gemini LLM.');
+    console.log('[Agent Config] Initializing Google Gemini LLM (gemini-1.5-flash).');
     return new ChatGoogleGenerativeAI({
-      modelName: 'gemini-1.5-pro',
+      modelName: 'gemini-1.5-flash',
       apiKey: process.env.GEMINI_API_KEY,
       temperature: temperature,
     });
@@ -49,7 +49,7 @@ function getLLM(onTokenStream = null) {
     // Last resort fallback if they only provided the AQ. key and no OpenAI key
     console.log('[Agent Config] Initializing Google Gemini LLM with provided key (format checks failed).');
     return new ChatGoogleGenerativeAI({
-      modelName: 'gemini-1.5-pro',
+      modelName: 'gemini-1.5-flash',
       apiKey: process.env.GEMINI_API_KEY,
       temperature: temperature,
     });
