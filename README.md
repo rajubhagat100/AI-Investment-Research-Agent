@@ -172,7 +172,7 @@ Therefore, we recommend a **Split Deployment** strategy:
 
 ---
 
-## Bonus: Chat Logs
+## Chat Logs
 As mandated by the bonus guidelines, we have included the complete chronological conversational logs of the developer-AI chat sessions during the creation of this project. 
 The logs are exported directly in the workspace as:
 * **[chat_logs.jsonl](file:///c:/Users/bhaga/Desktop/aipro/chat_logs.jsonl)** (Raw JSON Lines format including all tool execution payloads, system messages, and reasoning transcripts).
