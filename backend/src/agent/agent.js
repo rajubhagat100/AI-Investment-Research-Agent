@@ -27,19 +27,30 @@ const tools = [
 function getLLM(onTokenStream = null) {
   const temperature = 0.2;
   
-  if (process.env.GEMINI_API_KEY) {
+  // Validate Gemini key format - AI Studio developer keys start with 'AIzaSy'
+  const hasValidGeminiKey = process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.startsWith('AIzaSy');
+  const hasOpenAIKey = !!process.env.OPENAI_API_KEY;
+
+  if (hasValidGeminiKey) {
     console.log('[Agent Config] Initializing Google Gemini LLM.');
     return new ChatGoogleGenerativeAI({
       modelName: 'gemini-1.5-pro',
       apiKey: process.env.GEMINI_API_KEY,
       temperature: temperature,
-      // For streaming tokens (if supported directly in langchain agent invocation)
     });
-  } else if (process.env.OPENAI_API_KEY) {
-    console.log('[Agent Config] Initializing OpenAI LLM.');
+  } else if (hasOpenAIKey) {
+    console.log('[Agent Config] Initializing OpenAI LLM (Gemini key was missing or invalid).');
     return new ChatOpenAI({
       modelName: 'gpt-4o-mini',
       apiKey: process.env.OPENAI_API_KEY,
+      temperature: temperature,
+    });
+  } else if (process.env.GEMINI_API_KEY) {
+    // Last resort fallback if they only provided the AQ. key and no OpenAI key
+    console.log('[Agent Config] Initializing Google Gemini LLM with provided key (format checks failed).');
+    return new ChatGoogleGenerativeAI({
+      modelName: 'gemini-1.5-pro',
+      apiKey: process.env.GEMINI_API_KEY,
       temperature: temperature,
     });
   } else {

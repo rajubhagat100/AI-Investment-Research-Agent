@@ -23,6 +23,7 @@ app.use(express.json());
 
 // Root landing page to guide users to Vercel
 app.get('/', (req, res) => {
+  const targetUrl = req.headers.referer || 'https://ai-investment-research-agent-pi.vercel.app';
   res.send(`
     <html>
       <head>
@@ -41,7 +42,7 @@ app.get('/', (req, res) => {
           <h2>AURA Research Agent API</h2>
           <p>This is the server-side API processing engine. To perform stock research and access the interactive dashboard, please open the client portal:</p>
           <p style="font-size: 1.1rem; margin-bottom: 0;">
-            <a href="https://ai-investment-research-agent-drab.vercel.app" target="_blank">Open AURA Frontend Dashboard &rarr;</a>
+            <a href="${targetUrl}" target="_blank">Open AURA Frontend Dashboard &rarr;</a>
           </p>
         </div>
       </body>
